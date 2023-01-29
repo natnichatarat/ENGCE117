@@ -1,0 +1,96 @@
+//Natnicha tarat 65543206056-5 SEC 3
+//https://youtu.be/-fSfzh6QVks
+#include <stdio.h>
+struct Node {
+    int num;
+    struct Node *next; 
+};
+
+void ShowAll( struct Node *walk );//prototype
+struct Node *AddNode( struct Node **walk, int num );//prototype
+void UpdateNode(struct Node **walk, int oldnum, int newnum);//prototype
+struct Node *ShowBack(struct Node **walk);//prototype
+void SwapNode(struct Node **walk, int n1, int n2);//prototype
+
+int main(){
+    struct Node *start;
+    start = NULL;
+    AddNode( &start, 10 ); 
+    AddNode( &start, 20 );
+    AddNode( &start, 30 ); 
+    AddNode( &start, 40 ); 
+    ShowAll(start);
+    UpdateNode( &start, 10, 99 ); 
+    ShowAll(start);
+    ShowBack (&start);
+    ShowAll(start);
+    SwapNode(&start, 20, 40);
+    ShowAll(start); 
+    return 0;
+}
+
+void ShowAll( struct Node *walk ){
+    while (walk != NULL){
+        printf("%d ", walk->num); 
+        walk = walk->next; 
+    }  // end while
+    printf("\n");
+} // end function
+struct Node *AddNode(struct Node **walk, int num){ 
+    while(*walk != NULL){
+        walk = &(*walk)->next;
+    }  // end while
+    *walk = new struct Node;
+    (*walk)->num = num;
+    (*walk)->next = NULL;
+    return *walk;
+} // end function
+
+void UpdateNode(struct Node **walk, int oldnum, int newnum ) {
+    struct Node *current = *walk;
+    while (current != NULL) {
+        if (current->num == oldnum) {
+        	current->num = newnum;
+        } 
+        current = current->next;
+    } // end while
+} // end function
+struct Node *ShowBack(struct Node **walk){
+	Node *re = *walk;
+	Node *before = NULL;
+	Node *next = NULL;
+	while(re != NULL) {
+		next = re->next;
+		re->next = before;
+		before = re;
+		re = next;
+	}  // end while
+	*walk = before;
+} // end function
+void SwapNode(struct Node **walk, int n1, int n2)
+{
+    struct Node *current1 = NULL,*prenode1 = *walk;
+    while(prenode1 && prenode1->num != n1 ){
+        current1 = prenode1;
+        prenode1 = prenode1->next;
+    }
+    struct Node *current2 = NULL,*prenode2 = *walk;
+    while(prenode2 && prenode2->num != n2 ){
+        current2 = prenode2;
+        prenode2 = prenode2->next;
+    }
+    if (current1 == NULL) {
+        *walk = prenode2;
+    } else {
+        current1->next = prenode2;
+    }
+    if (current2 == NULL) {
+        *walk = prenode1;
+    } else {
+        current2->next = prenode1;
+        
+    }
+    struct Node *temp = prenode2->next;
+    prenode2->next = prenode1->next;
+    prenode1->next = temp;
+} // end function
